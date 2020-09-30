@@ -30,12 +30,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (altura.getText().toString().isEmpty()) {
+                    altura.setError("Informe a altura!");
+                    return;
+                }
+                if(peso.getText().toString().isEmpty()){
+                    peso.setError("Informe o peso!");
+                    return;
+                }
 
                 final double pesoVar = Double.parseDouble(peso.getText().toString());
                 final double alturaVar = Double.parseDouble(altura.getText().toString());
 
-                double calculoIMC = pesoVar/(alturaVar * alturaVar);
+                if(alturaVar == 0 ){
+                    altura.setError("Altura não pode ser 0!");
+                    return;
+                }
 
+                double calculoIMC = pesoVar/(alturaVar * alturaVar);
+                
                 if(calculoIMC < 18.5){
                     Toast.makeText(getApplicationContext(),"Magreza",Toast.LENGTH_LONG).show();
                 }
@@ -52,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Obesidade Grau III\nMórbida",Toast.LENGTH_LONG).show();
                 }
 
-                String resultado = Double.toString(calculoIMC);
-
+//                String resultado = Double.toString(calculoIMC);
+                String resultado = new DecimalFormat("#,##0.00").format(calculoIMC);
                 Intent intent = new Intent(getApplicationContext(),ActivityIMC.class);
                 intent.putExtra("Calcula",resultado);
                 startActivity(intent);
